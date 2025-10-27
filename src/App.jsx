@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "./App.css";
+import { ListPlus, ListX } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { ChevronDownIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -28,14 +29,7 @@ function App() {
     jobTitle: "",
     tel: "",
   });
-  const [datePickerStates, setDatePickerStates] = useState({
-    education: false,
-    startDate: false,
-    endDate: false,
-  });
-  const [date, setDate] = useState();
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
+
   const [education, setEducation] = useState([
     {
       id: 0,
@@ -50,6 +44,8 @@ function App() {
       company: "",
       position: "",
       description: "",
+      from: null,
+      till: null,
     },
   ]);
 
@@ -63,15 +59,15 @@ function App() {
     }
   }, []);
 
-  function handleReplacement(typeField, index, e, state) {
+  function handleReplacement(typeField, index, e, state, stateSetter) {
     const map = state.map((el, i) => {
       if (i === index) {
         return { ...el, [typeField]: e };
       } else {
-        return e;
+        return el;
       }
     });
-    setEducation(map);
+    stateSetter(map);
     return education;
   }
 
@@ -197,25 +193,27 @@ function App() {
                     startDate: null,
                   },
                 ]);
+                console.log(education);
               }}
             >
-              Add field
+              <ListPlus />
             </button>
           </div>
           {education.map(({ id, school, course, startDate }, i) => (
             <div key={id} className="mt-3">
-              <button
-                style={{ textAlign: "right" }}
-                className="bg-red-500"
-                onClick={(e) => {
-                  e.preventDefault();
-                  id > 1 &&
-                    setEducation((prev) => prev.filter((el) => el.id !== id));
-                  console.log(education);
-                }}
-              >
-                Remove field
-              </button>
+              <div className="flex justify-end">
+                <button
+                  className="bg-red-500"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    id > 0 &&
+                      setEducation((prev) => prev.filter((el) => el.id !== id));
+                    console.log(education);
+                  }}
+                >
+                  <ListX />
+                </button>
+              </div>
               <label
                 htmlFor={`school-${id}`}
                 className="my-2 flex flex-col md:grid md:grid-cols-[130px_1fr]"
@@ -228,7 +226,13 @@ function App() {
                   className="rounded-sm border border-gray-400 bg-[#171717] px-2 py-1 outline-0"
                   value={school}
                   onChange={(e) =>
-                    handleReplacement("school", i, e.target.value, education)
+                    handleReplacement(
+                      "school",
+                      i,
+                      e.target.value,
+                      education,
+                      setEducation,
+                    )
                   }
                 />
               </label>
@@ -241,7 +245,7 @@ function App() {
                   className="border-gray-400 outline-0"
                   value={course}
                   onValueChange={(e) => {
-                    handleReplacement("course", i, e, education);
+                    handleReplacement("course", i, e, education, setEducation);
                   }}
                 >
                   <SelectTrigger className="w-full">
@@ -265,157 +269,193 @@ function App() {
 
               <label className="flex flex-col md:grid md:grid-cols-[130px_1fr]">
                 <p className="text-base font-semibold">Date of study:</p>
-                <input
+                <Input
                   type="date"
                   id={`date-${id}`}
-                  value={
-                    education[i].startDate
-                      ? education[i].startDate.toISOString().split("T")[0]
-                      : ""
-                  }
+                  value={startDate}
                   onChange={(e) => {
-                    const date = e.target.value
-                      ? new Date(e.target.value)
-                      : null;
-                    setEducation((prev) =>
-                      prev.map((el) =>
-                        el.id === id ? { ...el, startDate: date } : el,
-                      ),
+                    handleReplacement(
+                      "startDate",
+                      i,
+                      e.target.value,
+                      education,
+                      setEducation,
                     );
+                    console.log(e.target.value);
                   }}
                   className="rounded-md border border-gray-400 bg-[#171717] px-3 py-2 text-sm outline-none focus:border-gray-500"
                 />
               </label>
+              <hr className="mt-4" />
             </div>
           ))}
         </fieldset>
-        <hr className="mt-4" />
         <fieldset className="mt-2">
-          <legend className="text-xl font-bold">Experience</legend>
+          <div class="flex items-center justify-between">
+            <legend className="text-xl font-bold">Experience</legend>
+            <button
+              className="bg-green-500"
+              onClick={(e) => {
+                e.preventDefault();
+                setWork((prev) => [
+                  ...prev,
 
-          <label
-            htmlFor=""
-            className="mt-3 flex flex-col md:grid md:grid-cols-[130px_1fr]"
-          >
-            <p className="font-semibold">Company Name:</p>
-            <Input placeholder="Amazon" className="border border-gray-400" />
-          </label>
-
-          <label
-            htmlFor=""
-            className="mt-3 flex flex-col md:grid md:grid-cols-[130px_1fr]"
-          >
-            <p className="font-semibold">Position:</p>
-            <Input
-              placeholder="Software Engineer"
-              className="border border-gray-400"
-            />
-          </label>
-
-          <label
-            htmlFor=""
-            className="mt-3 flex flex-col md:grid md:grid-cols-[130px_1fr]"
-          >
-            <Label htmlFor="message-2" className="text-base font-semibold">
-              Job Description:
-            </Label>
-            <div>
-              <Textarea
-                placeholder="Code refactoring and bug fixing..."
-                id="message-2"
-              />
-              <p className="text-muted-foreground text-sm">
-                Word Count: <b>0/ 500</b> words.
-              </p>
-            </div>
-          </label>
-
-          <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:justify-between">
-            <label className="flex flex-col gap-2 sm:flex-row">
-              <Label
-                htmlFor="start-date"
-                className="text-base font-semibold whitespace-nowrap"
-              >
-                From:
-              </Label>
-              <Popover
-                open={datePickerStates.startDate}
-                onOpenChange={(open) =>
-                  setDatePickerStates((prev) => ({ ...prev, startDate: open }))
-                }
-              >
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    id="start-date"
-                    className="justify-between font-normal"
-                  >
-                    {startDate ? startDate.toLocaleDateString() : "Select date"}
-                    <ChevronDownIcon className="ml-2 h-4 w-4" />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent
-                  className="w-auto overflow-hidden p-0"
-                  align="start"
-                >
-                  <Calendar
-                    mode="single"
-                    selected={startDate}
-                    captionLayout="dropdown"
-                    onSelect={(date) => {
-                      setStartDate(date);
-                      setDatePickerStates((prev) => ({
-                        ...prev,
-                        startDate: false,
-                      }));
-                    }}
-                  />
-                </PopoverContent>
-              </Popover>
-            </label>
-            <label className="flex flex-col gap-2 sm:flex-row">
-              <Label
-                htmlFor="end-date"
-                className="text-base font-semibold whitespace-nowrap"
-              >
-                till:
-              </Label>
-              <Popover
-                open={datePickerStates.endDate}
-                onOpenChange={(open) =>
-                  setDatePickerStates((prev) => ({ ...prev, endDate: open }))
-                }
-              >
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    id="end-date"
-                    className="justify-between font-normal"
-                  >
-                    {endDate ? endDate.toLocaleDateString() : "Select date"}
-                    <ChevronDownIcon className="ml-2 h-4 w-4" />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent
-                  className="w-auto overflow-hidden p-0"
-                  align="start"
-                >
-                  <Calendar
-                    mode="single"
-                    selected={endDate}
-                    captionLayout="dropdown"
-                    onSelect={(date) => {
-                      setEndDate(date);
-                      setDatePickerStates((prev) => ({
-                        ...prev,
-                        endDate: false,
-                      }));
-                    }}
-                  />
-                </PopoverContent>
-              </Popover>
-            </label>
+                  {
+                    id: work.length,
+                    company: "",
+                    position: "",
+                    description: "",
+                    from: null,
+                    till: null,
+                  },
+                ]);
+              }}
+            >
+              <ListPlus />
+            </button>
           </div>
+          {work.map(({ id, company, position, description, from, till }, i) => (
+            <div key={id}>
+              <div className="mt-2 flex justify-end">
+                <button
+                  className="bg-red-500"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    id > 0 &&
+                      setWork((prev) => prev.filter((el) => el.id !== id));
+                    console.log(work);
+                  }}
+                >
+                  <ListX />
+                </button>
+              </div>
+              <label
+                htmlFor=""
+                className="mt-3 flex flex-col md:grid md:grid-cols-[130px_1fr]"
+              >
+                <p className="font-semibold">Company Name:</p>
+                <Input
+                  placeholder="Amazon"
+                  className="border border-gray-400"
+                  value={company}
+                  onChange={(e) => {
+                    e.preventDefault();
+                    handleReplacement(
+                      "company",
+                      i,
+                      e.target.value,
+                      work,
+                      setWork,
+                    );
+                  }}
+                />
+              </label>
+
+              <label
+                htmlFor=""
+                className="mt-3 flex flex-col md:grid md:grid-cols-[130px_1fr]"
+              >
+                <p className="font-semibold">Position:</p>
+                <Input
+                  placeholder="Software Engineer"
+                  className="border border-gray-400"
+                  value={position}
+                  onChange={(e) => {
+                    e.preventDefault();
+                    handleReplacement(
+                      "position",
+                      i,
+                      e.target.value,
+                      work,
+                      setWork,
+                    );
+                  }}
+                />
+              </label>
+              <label
+                htmlFor=""
+                className="mt-3 flex flex-col md:grid md:grid-cols-[130px_1fr]"
+              >
+                <Label htmlFor="message-2" className="text-base font-semibold">
+                  Job Description:
+                </Label>
+                <div>
+                  <Textarea
+                    maxLength={500}
+                    placeholder="Code refactoring and bug fixing..."
+                    id="message-2"
+                    value={description}
+                    onChange={(e) => {
+                      e.preventDefault();
+                      handleReplacement(
+                        "description",
+                        i,
+                        e.target.value,
+                        work,
+                        setWork,
+                      );
+                      console.log(work);
+                    }}
+                  />
+                  <p className="text-muted-foreground text-sm">
+                    Word Count: <b>{description.length}/500</b> characters.
+                  </p>
+                </div>
+              </label>
+
+              <div className="my-2 flex flex-col gap-3 sm:flex-row sm:justify-between">
+                <label className="flex flex-col gap-2 sm:flex-row">
+                  <Label
+                    htmlFor="start-date"
+                    className="text-base font-semibold whitespace-nowrap"
+                  >
+                    From:
+                  </Label>
+
+                  <Input
+                    type="date"
+                    value={from}
+                    onChange={(e) => {
+                      e.preventDefault();
+                      handleReplacement(
+                        "from",
+                        i,
+                        e.target.value,
+                        work,
+                        setWork,
+                      );
+                      console.log(work);
+                    }}
+                  />
+                </label>
+                <label className="flex flex-col gap-2 sm:flex-row">
+                  <Label
+                    htmlFor="end-date"
+                    className="text-base font-semibold whitespace-nowrap"
+                  >
+                    till:
+                  </Label>
+
+                  <Input
+                    type="date"
+                    value={till}
+                    onChange={(e) => {
+                      e.preventDefault();
+                      handleReplacement(
+                        "till",
+                        i,
+                        e.target.value,
+                        work,
+                        setWork,
+                      );
+                      console.log(work[id].till);
+                    }}
+                  />
+                </label>
+              </div>
+              <hr />
+            </div>
+          ))}
         </fieldset>
       </form>
     </div>
