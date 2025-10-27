@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import { ListPlus, ListX } from "lucide-react";
+import { ListPlus, ListX, Trash } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { ChevronDownIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -28,6 +28,7 @@ function App() {
     email: "",
     jobTitle: "",
     tel: "",
+    img: null,
   });
 
   const [education, setEducation] = useState([
@@ -71,6 +72,14 @@ function App() {
     return education;
   }
 
+  const handleImg = (e) => {
+    const imgSrc = e.target.files[0];
+    if (imgSrc) {
+      const imageUrl = URL.createObjectURL(imgSrc);
+      setInfo((prev) => ({ ...prev, img: imageUrl }));
+    }
+  };
+
   function toggle() {
     const newMode = !darkMode;
     setDarkMode(newMode);
@@ -102,7 +111,7 @@ function App() {
                 });
               }}
             >
-              Clear field
+              <Trash />
             </button>
           </div>
           <hr />
@@ -171,6 +180,33 @@ function App() {
             />
             <p>{info.tel}</p>
           </label>
+
+          <label
+            className="mb-7 flex flex-col md:grid md:grid-cols-[130px_1fr]"
+            htmlFor="img"
+          >
+            <p className="font-semibold">Attach passport: </p>
+            <Input
+              onChange={(e) => handleImg(e)}
+              accept="image/*"
+              type="file"
+              id="phone"
+              placeholder="+(555)-(555)-(5555)"
+              className="rounded border border-gray-400 px-2 py-1 outline-0"
+            />
+            <p>{info.tel}</p>
+          </label>
+
+          {info.img && (
+            <div>
+              <p>Preview:</p>
+              <img
+                src={info.img}
+                alt="preview"
+                style={{ width: "200px", height: "auto", borderRadius: "8px" }}
+              />
+            </div>
+          )}
         </fieldset>
         <hr />
 
