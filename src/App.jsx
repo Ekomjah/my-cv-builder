@@ -22,8 +22,14 @@ import {
 } from "@/components/ui/select";
 
 function App() {
-  const [open, setOpen] = useState(false);
+  const [datePickerStates, setDatePickerStates] = useState({
+    education: false,
+    startDate: false,
+    endDate: false,
+  });
   const [date, setDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
   const [education, setEducation] = useState([
     {
       id: 0,
@@ -43,7 +49,7 @@ function App() {
     }
   }, []);
 
-  const toggle = () => {
+  function toggle() {
     const newMode = !darkMode;
     setDarkMode(newMode);
     if (newMode) {
@@ -53,12 +59,15 @@ function App() {
       document.documentElement.classList.remove("dark");
       localStorage.setItem("theme", "light");
     }
-  };
+  }
   return (
     <div className="mx-auto w-full max-w-[600px] rounded bg-[#414040] p-4">
       <form action="">
         <fieldset>
-          <legend className="text-xl font-bold">General Information</legend>
+          <legend className="mb-1 text-xl font-bold">
+            General Information
+          </legend>
+          <hr />
           <label
             htmlFor="name"
             className="my-3 flex flex-col md:grid md:grid-cols-[130px_1fr]"
@@ -68,7 +77,7 @@ function App() {
               type="text"
               id="name"
               placeholder="John Doe"
-              className="rounded border border-gray-400 px-2 py-1 outline-0"
+              className="rounded border border-gray-500 px-2 py-1 outline-0"
             />
           </label>
           <label
@@ -154,7 +163,15 @@ function App() {
                 <Label htmlFor="date" className="text-base font-semibold">
                   Date of study:
                 </Label>
-                <Popover open={open} onOpenChange={setOpen}>
+                <Popover
+                  open={datePickerStates.education}
+                  onOpenChange={(open) =>
+                    setDatePickerStates((prev) => ({
+                      ...prev,
+                      education: open,
+                    }))
+                  }
+                >
                   <PopoverTrigger asChild>
                     <Button
                       variant="outline"
@@ -162,7 +179,7 @@ function App() {
                       className="justify-between font-normal"
                     >
                       {date ? date.toLocaleDateString() : "Select date"}
-                      <ChevronDownIcon />
+                      <ChevronDownIcon className="ml-2 h-4 w-4" />
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent
@@ -175,7 +192,10 @@ function App() {
                       captionLayout="dropdown"
                       onSelect={(date) => {
                         setDate(date);
-                        setOpen(false);
+                        setDatePickerStates((prev) => ({
+                          ...prev,
+                          education: false,
+                        }));
                       }}
                     />
                   </PopoverContent>
@@ -187,7 +207,7 @@ function App() {
         <hr className="mt-4" />
         <fieldset className="mt-2">
           <legend className="text-xl font-bold">Experience</legend>
-          
+
           <label
             htmlFor=""
             className="mt-3 flex flex-col md:grid md:grid-cols-[130px_1fr]"
@@ -225,20 +245,28 @@ function App() {
             </div>
           </label>
 
-          <div className="mt-2 flex justify-between">
-            <label className="flex gap-2">
-              <Label htmlFor="date" className="text-base font-semibold">
-                Start Date:
+          <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:justify-between">
+            <label className="flex items-center gap-2">
+              <Label
+                htmlFor="start-date"
+                className="text-base font-semibold whitespace-nowrap"
+              >
+                From:
               </Label>
-              <Popover open={open} onOpenChange={setOpen}>
+              <Popover
+                open={datePickerStates.startDate}
+                onOpenChange={(open) =>
+                  setDatePickerStates((prev) => ({ ...prev, startDate: open }))
+                }
+              >
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
-                    id="date"
-                    className="justify-between font-normal"
+                    id="start-date"
+                    className="w-[140px] font-normal"
                   >
-                    {date ? date.toLocaleDateString() : "Select date"}
-                    <ChevronDownIcon />
+                    {startDate ? startDate.toLocaleDateString() : "Select date"}
+                    <ChevronDownIcon className="ml-2 h-4 w-4" />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent
@@ -247,30 +275,40 @@ function App() {
                 >
                   <Calendar
                     mode="single"
-                    selected={date}
+                    selected={startDate}
                     captionLayout="dropdown"
                     onSelect={(date) => {
-                      setDate(date);
-                      setOpen(false);
+                      setStartDate(date);
+                      setDatePickerStates((prev) => ({
+                        ...prev,
+                        startDate: false,
+                      }));
                     }}
                   />
                 </PopoverContent>
               </Popover>
             </label>
-
-            <label className="flex gap-2">
-              <Label htmlFor="date" className="text-base font-semibold">
+            <label className="flex items-center gap-2">
+              <Label
+                htmlFor="end-date"
+                className="text-base font-semibold whitespace-nowrap"
+              >
                 till:
               </Label>
-              <Popover open={open} onOpenChange={setOpen}>
+              <Popover
+                open={datePickerStates.endDate}
+                onOpenChange={(open) =>
+                  setDatePickerStates((prev) => ({ ...prev, endDate: open }))
+                }
+              >
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
-                    id="date"
-                    className="justify-between font-normal"
+                    id="end-date"
+                    className="w-[140px] font-normal"
                   >
-                    {date ? date.toLocaleDateString() : "Select date"}
-                    <ChevronDownIcon />
+                    {endDate ? endDate.toLocaleDateString() : "Select date"}
+                    <ChevronDownIcon className="ml-2 h-4 w-4" />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent
@@ -279,11 +317,14 @@ function App() {
                 >
                   <Calendar
                     mode="single"
-                    selected={date}
+                    selected={endDate}
                     captionLayout="dropdown"
                     onSelect={(date) => {
-                      setDate(date);
-                      setOpen(false);
+                      setEndDate(date);
+                      setDatePickerStates((prev) => ({
+                        ...prev,
+                        endDate: false,
+                      }));
                     }}
                   />
                 </PopoverContent>
