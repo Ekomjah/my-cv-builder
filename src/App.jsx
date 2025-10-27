@@ -22,20 +22,34 @@ import {
 } from "@/components/ui/select";
 
 function App() {
+  const [info, setInfo] = useState({
+    name: "",
+    email: "",
+    jobTitle: "",
+    tel: "",
+  });
   const [datePickerStates, setDatePickerStates] = useState({
     education: false,
     startDate: false,
     endDate: false,
   });
-  const [date, setDate] = useState(new Date());
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [date, setDate] = useState();
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
   const [education, setEducation] = useState([
     {
       id: 0,
       school: "",
       course: "",
-      startDate: "",
+      startDate: null,
+    },
+  ]);
+  const [work, setWork] = useState([
+    {
+      id: 0,
+      company: "",
+      position: "",
+      description: "",
     },
   ]);
 
@@ -48,6 +62,18 @@ function App() {
       setDarkMode(true);
     }
   }, []);
+
+  function handleReplacement(typeField, index, e, state) {
+    const map = state.map((el, i) => {
+      if (i === index) {
+        return { ...el, [typeField]: e };
+      } else {
+        return e;
+      }
+    });
+    setEducation(map);
+    return education;
+  }
 
   function toggle() {
     const newMode = !darkMode;
@@ -64,9 +90,25 @@ function App() {
     <div className="mx-auto w-full max-w-[600px] rounded bg-[#414040] p-4">
       <form action="">
         <fieldset>
-          <legend className="mb-1 text-xl font-bold">
-            General Information
-          </legend>
+          <div className="flex items-center justify-between">
+            <legend className="mb-1 text-xl font-bold">
+              General Information
+            </legend>
+            <button
+              className="bg-red-500"
+              onClick={(e) => {
+                e.preventDefault();
+                setInfo({
+                  name: "",
+                  email: "",
+                  jobTitle: "",
+                  tel: "",
+                });
+              }}
+            >
+              Clear field
+            </button>
+          </div>
           <hr />
           <label
             htmlFor="name"
@@ -74,10 +116,14 @@ function App() {
           >
             <p className="font-semibold">Name: </p>
             <Input
+              value={info.name}
+              onChange={(e) =>
+                setInfo((prev) => ({ ...prev, name: e.target.value }))
+              }
               type="text"
               id="name"
               placeholder="John Doe"
-              className="rounded border border-gray-500 px-2 py-1 outline-0"
+              className="rounded border border-gray-400 px-2 py-1 outline-0"
             />
           </label>
           <label
@@ -86,6 +132,10 @@ function App() {
           >
             <p className="font-semibold">Email: </p>
             <Input
+              value={info.email}
+              onChange={(e) =>
+                setInfo((prev) => ({ ...prev, email: e.target.value }))
+              }
               type="email"
               id="email"
               placeholder="example@email.com"
@@ -98,6 +148,10 @@ function App() {
           >
             <p className="font-semibold">Job Title: </p>
             <Input
+              value={info.jobTitle}
+              onChange={(e) =>
+                setInfo((prev) => ({ ...prev, jobTitle: e.target.value }))
+              }
               type="text"
               id="title"
               placeholder="Front-end Developer"
@@ -110,30 +164,72 @@ function App() {
           >
             <p className="font-semibold">Telephone: </p>
             <Input
+              value={info.tel}
+              onChange={(e) =>
+                setInfo((prev) => ({ ...prev, tel: e.target.value }))
+              }
               type="tel"
               id="phone"
               placeholder="+(555)-(555)-(5555)"
               className="rounded border border-gray-400 px-2 py-1 outline-0"
             />
+            <p>{info.tel}</p>
           </label>
         </fieldset>
         <hr />
 
         <fieldset className="mt-2">
-          <legend className="text-xl font-bold">Educational Background</legend>
-          {education.map(({ id, school, course, startDate }) => (
+          <div className="flex items-center justify-between">
+            <legend className="text-xl font-bold">
+              Educational Background
+            </legend>
+            <button
+              className="bg-green-500"
+              onClick={(e) => {
+                e.preventDefault();
+                setEducation((prev) => [
+                  ...prev,
+
+                  {
+                    id: education.length,
+                    school: "",
+                    course: "",
+                    startDate: null,
+                  },
+                ]);
+              }}
+            >
+              Add field
+            </button>
+          </div>
+          {education.map(({ id, school, course, startDate }, i) => (
             <div key={id} className="mt-3">
+              <button
+                style={{ textAlign: "right" }}
+                className="bg-red-500"
+                onClick={(e) => {
+                  e.preventDefault();
+                  id > 1 &&
+                    setEducation((prev) => prev.filter((el) => el.id !== id));
+                  console.log(education);
+                }}
+              >
+                Remove field
+              </button>
               <label
                 htmlFor={`school-${id}`}
                 className="my-2 flex flex-col md:grid md:grid-cols-[130px_1fr]"
               >
-                <p className="font-semibold">School: </p>
+                <p className="font-semibold">School:</p>
                 <Input
                   type="text"
                   id={`school-${id}`}
                   placeholder="University of Example"
                   className="rounded-sm border border-gray-400 bg-[#171717] px-2 py-1 outline-0"
                   value={school}
+                  onChange={(e) =>
+                    handleReplacement("school", i, e.target.value, education)
+                  }
                 />
               </label>
               <label
@@ -141,7 +237,13 @@ function App() {
                 className="mb-2 flex flex-col md:grid md:grid-cols-[130px_1fr]"
               >
                 <p className="mb-2 font-semibold">Qualification acquired: </p>
-                <Select className="border-gray-400 outline-0">
+                <Select
+                  className="border-gray-400 outline-0"
+                  value={course}
+                  onValueChange={(e) => {
+                    handleReplacement("course", i, e, education);
+                  }}
+                >
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select a certification" />
                   </SelectTrigger>
@@ -151,55 +253,38 @@ function App() {
                       <SelectItem value="secondary">
                         High School Cert
                       </SelectItem>
-                      <SelectItem value="tertiary">Bachelors (B.Sc)</SelectItem>
-                      <SelectItem value="masters">Masters (M.Sc)</SelectItem>
-                      <SelectItem value="doctors">Doctorate (Ph.D)</SelectItem>
+                      <SelectItem value="Tertiary">Bachelors (B.Sc)</SelectItem>
+                      <SelectItem value="Masters">Masters (M.Sc)</SelectItem>
+                      <SelectItem value="Doctorate">
+                        Doctorate (Ph.D)
+                      </SelectItem>
                     </SelectGroup>
                   </SelectContent>
                 </Select>
               </label>
 
               <label className="flex flex-col md:grid md:grid-cols-[130px_1fr]">
-                <Label htmlFor="date" className="text-base font-semibold">
-                  Date of study:
-                </Label>
-                <Popover
-                  open={datePickerStates.education}
-                  onOpenChange={(open) =>
-                    setDatePickerStates((prev) => ({
-                      ...prev,
-                      education: open,
-                    }))
+                <p className="text-base font-semibold">Date of study:</p>
+                <input
+                  type="date"
+                  id={`date-${id}`}
+                  value={
+                    education[i].startDate
+                      ? education[i].startDate.toISOString().split("T")[0]
+                      : ""
                   }
-                >
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      id="date"
-                      className="justify-between font-normal"
-                    >
-                      {date ? date.toLocaleDateString() : "Select date"}
-                      <ChevronDownIcon className="ml-2 h-4 w-4" />
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent
-                    className="w-auto overflow-hidden p-0"
-                    align="start"
-                  >
-                    <Calendar
-                      mode="single"
-                      selected={date}
-                      captionLayout="dropdown"
-                      onSelect={(date) => {
-                        setDate(date);
-                        setDatePickerStates((prev) => ({
-                          ...prev,
-                          education: false,
-                        }));
-                      }}
-                    />
-                  </PopoverContent>
-                </Popover>
+                  onChange={(e) => {
+                    const date = e.target.value
+                      ? new Date(e.target.value)
+                      : null;
+                    setEducation((prev) =>
+                      prev.map((el) =>
+                        el.id === id ? { ...el, startDate: date } : el,
+                      ),
+                    );
+                  }}
+                  className="rounded-md border border-gray-400 bg-[#171717] px-3 py-2 text-sm outline-none focus:border-gray-500"
+                />
               </label>
             </div>
           ))}
@@ -246,7 +331,7 @@ function App() {
           </label>
 
           <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:justify-between">
-            <label className="flex items-center gap-2">
+            <label className="flex flex-col gap-2 sm:flex-row">
               <Label
                 htmlFor="start-date"
                 className="text-base font-semibold whitespace-nowrap"
@@ -263,7 +348,7 @@ function App() {
                   <Button
                     variant="outline"
                     id="start-date"
-                    className="w-[140px] font-normal"
+                    className="justify-between font-normal"
                   >
                     {startDate ? startDate.toLocaleDateString() : "Select date"}
                     <ChevronDownIcon className="ml-2 h-4 w-4" />
@@ -288,7 +373,7 @@ function App() {
                 </PopoverContent>
               </Popover>
             </label>
-            <label className="flex items-center gap-2">
+            <label className="flex flex-col gap-2 sm:flex-row">
               <Label
                 htmlFor="end-date"
                 className="text-base font-semibold whitespace-nowrap"
@@ -305,7 +390,7 @@ function App() {
                   <Button
                     variant="outline"
                     id="end-date"
-                    className="w-[140px] font-normal"
+                    className="justify-between font-normal"
                   >
                     {endDate ? endDate.toLocaleDateString() : "Select date"}
                     <ChevronDownIcon className="ml-2 h-4 w-4" />
