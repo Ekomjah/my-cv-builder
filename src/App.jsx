@@ -9,7 +9,9 @@ function App() {
     email: "",
     jobTitle: "",
     tel: "",
-    img: null,
+    img: "",
+    location: "",
+    portfolio: "",
   });
 
   const [education, setEducation] = useState([
@@ -34,7 +36,7 @@ function App() {
   document.documentElement.classList.add("dark");
 
   return (
-    <div className="grid grid-cols-[1fr_3fr] items-center justify-around">
+    <div className="grid grid-cols-[1fr_3fr] items-center justify-around gap-3">
       <Form
         info={info}
         setInfo={setInfo}
@@ -43,7 +45,7 @@ function App() {
         work={work}
         setWork={setWork}
       />
-      <Preview />
+      <Preview info={info} education={education} work={work} />
     </div>
   );
 }

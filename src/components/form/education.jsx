@@ -1,5 +1,5 @@
 import { Input } from "@/components/ui/input";
-import { ListPlus, ListX } from "lucide-react";
+import { ListPlus, ListX, GraduationCap } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -18,7 +18,10 @@ export default function Education({
   return (
     <fieldset className="mt-2">
       <div className="flex items-center justify-between">
-        <legend className="text-xl font-bold">Educational Background</legend>
+        <div className="flex items-center gap-1">
+          <legend className="text-xl font-bold">Educational Background</legend>
+          <GraduationCap />
+        </div>
         <button
           className="bg-green-500"
           onClick={(e) => {
