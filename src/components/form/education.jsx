@@ -33,6 +33,7 @@ export default function Education({
               {
                 id: education.length,
                 school: "",
+                subject: "",
                 course: "",
                 startDate: null,
               },
@@ -122,7 +123,7 @@ export default function Education({
                 <SelectGroup>
                   <SelectLabel>Qualifications</SelectLabel>
                   <SelectItem value="Secondary">High School Cert</SelectItem>
-                  <SelectItem value="Tertiary">Bachelors (B.Sc)</SelectItem>
+                  <SelectItem value="Bachelors">Bachelors (B.Sc)</SelectItem>
                   <SelectItem value="Masters">Masters (M.Sc)</SelectItem>
                   <SelectItem value="Doctorate">Doctorate (Ph.D)</SelectItem>
                   <SelectItem value="Other">Other</SelectItem>

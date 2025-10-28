@@ -1,8 +1,14 @@
-import { Mail, Link2, Phone, MapPin } from "lucide-react";
+import { Mail, Link2, Phone, MapPin, BriefcaseBusiness } from "lucide-react";
+
 export default function Preview({ info, education, work }) {
   const { name, email, jobTitle, tel, img, location, portfolio } = info;
+  const date = new Date();
+
   return (
-    <div className="min-h-1/2 rounded bg-white p-8 text-[#2C3E50]">
+    <div
+      id="resume-preview"
+      className="print min-h-1/2 rounded bg-white p-8 text-[#2C3E50]"
+    >
       <div className="mb-4 flex items-center justify-between border-b-2 border-[#2C3E50] pb-4">
         <div className="flex items-center gap-2">
           {img && (
@@ -16,7 +22,12 @@ export default function Preview({ info, education, work }) {
           )}
           <div className="flex flex-col items-center">
             <h1 className="font-bold">{name}</h1>
-            <p className="text-lg font-semibold">{jobTitle}</p>
+            {jobTitle !== "" && (
+              <div className="mt-4 flex items-center gap-2">
+                <BriefcaseBusiness />
+                <p className="text-lg font-semibold">{jobTitle}</p>
+              </div>
+            )}
           </div>
         </div>
         <div className="flex flex-col items-end gap-1">
@@ -40,34 +51,50 @@ export default function Preview({ info, education, work }) {
           </div>
         </div>
       </div>
-      <div className="flex items-center justify-between">
+      <div className="grid grid-cols-[1fr_2fr]">
         <div className="flex flex-col items-start gap-2 border-r border-[#2C3E50] p-2">
           <h2 className="text-lg font-bold">Education/Skills: </h2>
-          {education.school !== "" &&
-            education.map(({ school, subject, course, startDate }) => (
-              <div>
-                <div className="flex gap-1">
-                  <p className="max-w-[190px] text-base font-medium">
-                    {subject}
+          <ul className="list-disc">
+            {education.school !== "" &&
+              education.map(({ school, subject, course, startDate }) => (
+                <li className="mt-2">
+                  <div className="flex gap-1">
+                    <p className="max-w-[190px] text-base font-medium">
+                      {subject}
+                    </p>
+                    {course !== "" && (
+                      <p className="max-w-[190px] text-base font-medium">
+                        ({course})
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <h2 className="max-w-60 text-base font-bold">{school}</h2>
+                    {startDate !== "" && (
+                      <p className="text-base font-semibold"> -{startDate}</p>
+                    )}
+                  </div>
+                </li>
+              ))}
+          </ul>
+        </div>
+        <ul className="bold-list flex list-decimal flex-col gap-6 p-4 pl-7">
+          {work.map(({ company, position, description, from, till }) => (
+            <li>
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg font-bold">{company}</h2>
+
+                <div className="flex justify-end gap-2">
+                  <p className="font-medium">
+                    {from !== "" ? from : date.toLocaleDateString()} -
                   </p>
-                  <p className="max-w-[190px] text-base font-medium">
-                    ({course})
+                  <p className="font-medium">
+                    {till !== "" ? till : "Present"}
                   </p>
-                </div>
-                <div className="flex flex-wrap items-center gap-3">
-                  <h2 className="max-w-[190px] text-base font-bold">
-                    {school}
-                  </h2>
-                  <p className="text-base font-semibold"> -{startDate}</p>
                 </div>
               </div>
-            ))}
-        </div>
-        <div className="flex">
-          {work.map(({ company, position, description, from, till }) => (
-            <div>
-              <h2 className="text-base font-bold">{company}</h2>
-              <h2>{position}</h2>
+
+              <h2 className="text-base font-semibold">{position}</h2>
               <p>
                 {description
                   .split("\n")
@@ -78,11 +105,9 @@ export default function Preview({ info, education, work }) {
                     </ul>
                   ))}
               </p>
-              <p>{from}</p>
-              <p>{till}</p>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </div>
   );

@@ -183,3 +183,13 @@ button:focus-visible {
     @apply bg-background text-foreground;
   }
 }
+
+@media print {
+  .no-print {
+    display: none;
+  }
+}
+
+.bold-list li::marker {
+  font-weight: bold;
+}

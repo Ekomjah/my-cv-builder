@@ -1,5 +1,5 @@
 import {
-  Trash,
+  CircleX,
   Mail,
   CircleUserRound,
   UserRound,
@@ -28,7 +28,7 @@ export default function Head({ info, setInfo }) {
           <CircleUserRound />
         </div>
         <button
-          className="bg-red-500"
+          className=""
           onClick={(e) => {
             e.preventDefault();
             setInfo({
@@ -36,10 +36,13 @@ export default function Head({ info, setInfo }) {
               email: "",
               jobTitle: "",
               tel: "",
+              img: "",
+              location: "",
+              portfolio: "",
             });
           }}
         >
-          <Trash />
+          <CircleX color="#ff0000" />
         </button>
       </div>
       <hr />

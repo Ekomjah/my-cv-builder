@@ -13,7 +13,7 @@ export default function Form({
   return (
     <form
       action=""
-      className="mx-auto w-full max-w-[600px] rounded bg-[#414040] p-4"
+      className="no-print mx-auto w-full max-w-[600px] rounded bg-[#414040] p-4"
     >
       <Header info={info} setInfo={setInfo} />
       <hr />
