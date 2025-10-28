@@ -2,7 +2,8 @@ import { useState } from "react";
 import "./App.css";
 import Form from "./components/form/form";
 import Preview from "./components/preview/previewPane";
-
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import ResumePDF from "./printer.jsx";
 function App() {
   const [info, setInfo] = useState({
     name: "",
@@ -46,7 +47,17 @@ function App() {
         work={work}
         setWork={setWork}
       />
-      <Preview info={info} education={education} work={work} />
+      <div>
+        <Preview info={info} education={education} work={work} />
+
+        <PDFDownloadLink
+          document={<ResumePDF info={info} education={education} work={work} />}
+          fileName={`${info.name}_CV.pdf`}
+          className="rounded bg-[#2C3E50] px-4 py-2 text-white hover:bg-[#1A252F]"
+        >
+          {({ loading }) => (loading ? "Generating PDF..." : "Download CV")}
+        </PDFDownloadLink>
+      </div>
     </div>
   );
 }
