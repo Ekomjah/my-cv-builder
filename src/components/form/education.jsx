@@ -1,5 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { ListPlus, ListX, GraduationCap } from "lucide-react";
+
 import {
   Select,
   SelectContent,
@@ -42,7 +43,7 @@ export default function Education({
           <ListPlus />
         </button>
       </div>
-      {education.map(({ id, school, course, startDate }, i) => (
+      {education.map(({ id, school, subject, course, startDate }, i) => (
         <div key={id} className="mt-3">
           <div className="flex justify-end">
             <button
@@ -79,6 +80,29 @@ export default function Education({
               }
             />
           </label>
+
+          <label
+            htmlFor={`subject-${id}`}
+            className="my-2 flex flex-col md:grid md:grid-cols-[130px_1fr]"
+          >
+            <p className="font-semibold">Course Studied:</p>
+            <Input
+              type="text"
+              id={`subject-${id}`}
+              placeholder="Software Engineering"
+              className="rounded-sm border border-gray-400 bg-[#171717] px-2 py-1 outline-0"
+              value={subject}
+              onChange={(e) =>
+                handleReplacement(
+                  "subject",
+                  i,
+                  e.target.value,
+                  education,
+                  setEducation,
+                )
+              }
+            />
+          </label>
           <label
             htmlFor=""
             className="mb-2 flex flex-col md:grid md:grid-cols-[130px_1fr]"
@@ -97,10 +121,11 @@ export default function Education({
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Qualifications</SelectLabel>
-                  <SelectItem value="secondary">High School Cert</SelectItem>
+                  <SelectItem value="Secondary">High School Cert</SelectItem>
                   <SelectItem value="Tertiary">Bachelors (B.Sc)</SelectItem>
                   <SelectItem value="Masters">Masters (M.Sc)</SelectItem>
                   <SelectItem value="Doctorate">Doctorate (Ph.D)</SelectItem>
+                  <SelectItem value="Other">Other</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>

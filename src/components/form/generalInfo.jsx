@@ -176,17 +176,6 @@ export default function Head({ info, setInfo }) {
           />
         </div>
       </label>
-
-      {info.img && (
-        <div>
-          <p>Preview:</p>
-          <img
-            src={info.img}
-            alt="preview"
-            style={{ width: "200px", height: "auto", borderRadius: "8px" }}
-          />
-        </div>
-      )}
     </fieldset>
   );
 }

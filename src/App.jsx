@@ -18,6 +18,7 @@ function App() {
     {
       id: 0,
       school: "",
+      subject: "",
       course: "",
       startDate: "",
     },
