@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 export default function Work({ work, setWork, handleReplacement }) {
   return (
     <fieldset className="mt-2">
-      <div class="flex items-center justify-between">
+      <div className="flex items-center justify-between">
         <legend className="text-xl font-bold">Experience</legend>
         <button
           className="bg-green-500"

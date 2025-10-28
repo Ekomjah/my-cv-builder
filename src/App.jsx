@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import Form from "./components/form/form";
+import Preview from "./components/preview/previewPane";
 
 function App() {
   const [info, setInfo] = useState({
@@ -33,7 +34,7 @@ function App() {
   document.documentElement.classList.add("dark");
 
   return (
-    <div className="mx-auto w-full max-w-[600px] rounded bg-[#414040] p-4">
+    <div className="grid grid-cols-[1fr_3fr] items-center justify-around">
       <Form
         info={info}
         setInfo={setInfo}
@@ -42,6 +43,7 @@ function App() {
         work={work}
         setWork={setWork}
       />
+      <Preview />
     </div>
   );
 }
