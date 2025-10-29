@@ -111,6 +111,7 @@ export default function Education({
             <p className="mb-2 font-semibold">Qualification acquired: </p>
             <Input
               type="text"
+              id={`course-${id}`}
               placeholder="Ph.D"
               maxLength={7}
               className="border-gray-400 outline-0"

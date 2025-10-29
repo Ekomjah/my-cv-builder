@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import Form from "./components/form/form";
 import Preview from "./components/preview/previewPane";
@@ -6,26 +6,42 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
 import ResumePDF from "./printer.jsx";
 
 function App() {
-  const [info, setInfo] = useState({
-    name: "",
-    email: "",
-    jobTitle: "",
-    tel: "",
-    img: "",
-    location: "",
-    portfolio: "",
-  });
+  const getLocalData = (key, defaultValue) => {
+    const storedValue = localStorage.getItem(key);
+    return storedValue ? JSON.parse(storedValue) : defaultValue;
+  };
 
-  const [education, setEducation] = useState([
-    { id: 0, school: "", subject: "", course: "", startDate: "" },
-  ]);
+  const [info, setInfo] = useState(() =>
+    getLocalData("info", {
+      name: "",
+      email: "",
+      jobTitle: "",
+      tel: "",
+      img: "",
+      location: "",
+      portfolio: "",
+    }),
+  );
 
-  const [work, setWork] = useState([
-    { id: 0, company: "", position: "", description: "", from: "", till: "" },
-  ]);
+  const [education, setEducation] = useState(() =>
+    getLocalData("education", [
+      { id: 0, school: "", subject: "", course: "", startDate: "" },
+    ]),
+  );
+
+  const [work, setWork] = useState(() =>
+    getLocalData("work", [
+      { id: 0, company: "", position: "", description: "", from: "", till: "" },
+    ]),
+  );
 
   const [isFormShowing, setIsFormShowing] = useState(true);
 
+  useEffect(() => {
+    localStorage.setItem("info", JSON.stringify(info));
+    localStorage.setItem("work", JSON.stringify(work));
+    localStorage.setItem("education", JSON.stringify(education));
+  }, [info, education, work]);
   document.documentElement.classList.add("dark");
 
   return (
@@ -95,7 +111,15 @@ function App() {
         <PDFDownloadLink
           document={<ResumePDF info={info} education={education} work={work} />}
           fileName={`${info.name}_CV.pdf`}
-          className="no-print rounded bg-[#2C3E50] px-4 py-2 text-white hover:bg-[#1A252F]"
+          className="no-print cursor-pointer rounded bg-[#2C3E50] px-4 py-2 text-white hover:bg-[#1A252F]"
+        >
+          {({ loading }) => (loading ? "Generating PDF..." : "Download CV")}
+        </PDFDownloadLink>
+
+        <PDFDownloadLink
+          document={<ResumePDF info={info} education={education} work={work} />}
+          fileName={`${info.name}_CV.pdf`}
+          className="rounded bg-[#2C3E50] px-4 py-2 text-white hover:bg-[#1A252F]"
         >
           {({ loading }) => (loading ? "Generating PDF..." : "Download CV")}
         </PDFDownloadLink>
