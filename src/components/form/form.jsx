@@ -9,13 +9,11 @@ export default function Form({
   setEducation,
   work,
   setWork,
-  isFormShowing,
-  setIsFormShowing,
 }) {
   return (
     <form
       action=""
-      className={`${isFormShowing ? "block" : "hidden"} no-print mx-auto w-full max-w-[600px] rounded bg-[#414040] p-4 xl:block`}
+      className={`no-print mx-auto w-full max-w-[600px] rounded bg-[#414040] p-4`}
     >
       <Header info={info} setInfo={setInfo} />
       <hr />
@@ -31,15 +29,6 @@ export default function Form({
         setWork={setWork}
         handleReplacement={handleReplacement}
       />
-      <button
-        className="mt-4 rounded bg-purple-600 px-4 py-2 text-white hover:bg-purple-800 xl:hidden"
-        onClick={(e) => {
-          e.preventDefault();
-          setIsFormShowing(false);
-        }}
-      >
-        Preview
-      </button>
     </form>
   );
 }

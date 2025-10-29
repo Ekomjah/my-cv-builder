@@ -1,13 +1,13 @@
 import { Mail, Link2, Phone, MapPin, BriefcaseBusiness } from "lucide-react";
 
-export default function Preview({ info, education, work, isFormShowing }) {
+export default function Preview({ info, education, work }) {
   const { name, email, jobTitle, tel, img, location, portfolio } = info;
   const date = new Date();
 
   return (
     <div
       id="resume-preview"
-      className={`${isFormShowing ? "hidden" : ""} print min-h-1/2 rounded bg-white p-8 text-[#2C3E50] xl:block`}
+      className={`print min-h-1/2 rounded bg-white p-8 text-[#2C3E50]`}
     >
       <div className="mb-4 flex items-center justify-between border-b-2 border-[#2C3E50] pb-4">
         <div className="flex items-center gap-2">

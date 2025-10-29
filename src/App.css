@@ -42,6 +42,18 @@
   color: #888;
 }
 
-.hidden {
+/* Grid layout - hidden by default, shows as grid at xl breakpoint */
+.grid-layout-xl {
   display: none;
+}
+
+@media (min-width: 1280px) {
+  .hide-me {
+    display: block;
+  }
+  .grid-layout-xl {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 1.5rem; /* equivalent to gap-6 in Tailwind */
+  }
 }
