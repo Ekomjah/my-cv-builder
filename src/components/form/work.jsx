@@ -37,7 +37,6 @@ export default function Work({ work, setWork, handleReplacement }) {
               onClick={(e) => {
                 e.preventDefault();
                 id > 0 && setWork((prev) => prev.filter((el) => el.id !== id));
-                console.log(work);
               }}
             >
               <ListX />
@@ -102,7 +101,6 @@ export default function Work({ work, setWork, handleReplacement }) {
                     work,
                     setWork,
                   );
-                  console.log(work);
                 }}
               />
               <p className="text-muted-foreground text-sm">
@@ -126,7 +124,6 @@ export default function Work({ work, setWork, handleReplacement }) {
                 onChange={(e) => {
                   e.preventDefault();
                   handleReplacement("from", id, e.target.value, work, setWork);
-                  console.log(work);
                 }}
               />
             </label>
@@ -144,7 +141,6 @@ export default function Work({ work, setWork, handleReplacement }) {
                 onChange={(e) => {
                   e.preventDefault();
                   handleReplacement("till", id, e.target.value, work, setWork);
-                  console.log(work[id].till);
                 }}
               />
             </label>

@@ -38,7 +38,6 @@ export default function Education({
                 startDate: null,
               },
             ]);
-            console.log(education);
           }}
         >
           <ListPlus />
@@ -53,7 +52,6 @@ export default function Education({
                 e.preventDefault();
                 id > 0 &&
                   setEducation((prev) => prev.filter((el) => el.id !== id));
-                console.log(education);
               }}
             >
               <ListX />
@@ -142,7 +140,6 @@ export default function Education({
                   education,
                   setEducation,
                 );
-                console.log(e.target.value);
               }}
               className="rounded-md border border-gray-400 bg-[#171717] px-3 py-2 text-sm outline-none focus:border-gray-500"
             />

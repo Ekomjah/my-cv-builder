@@ -2,9 +2,6 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import Form from "./components/form/form";
 import Preview from "./components/preview/previewPane";
-import { PDFDownloadLink } from "@react-pdf/renderer";
-import ResumePDF from "./printer.jsx";
-
 function App() {
   const getLocalData = (key, defaultValue) => {
     const storedValue = localStorage.getItem(key);
@@ -46,7 +43,7 @@ function App() {
 
   return (
     <div className="space-y-4 p-6">
-      {/* Toggle button - only visible below XL */}
+      
       <div className="flex justify-end xl:hidden">
         <button
           onClick={() => setIsFormShowing(!isFormShowing)}
@@ -55,8 +52,7 @@ function App() {
           {isFormShowing ? "Show Preview" : "Show Form"}
         </button>
       </div>
-
-      {/* Grid layout for XL and above */}
+      
       <div className="grid-layout-xl">
         <Form
           info={info}
@@ -78,7 +74,6 @@ function App() {
         </button>
       </div>
 
-      {/* Below XL: show only one view at a time */}
       <div className="xl:hidden">
         {isFormShowing ? (
           <Form
@@ -94,8 +89,6 @@ function App() {
         )}
       </div>
 
-      {/* Action Buttons */}
-
       <div className="flex flex-wrap justify-center gap-4">
         {!isFormShowing && (
           <>
@@ -107,22 +100,6 @@ function App() {
             </button>
           </>
         )}
-        {/* PDF Download button - always visible */}
-        <PDFDownloadLink
-          document={<ResumePDF info={info} education={education} work={work} />}
-          fileName={`${info.name}_CV.pdf`}
-          className="no-print cursor-pointer rounded bg-[#2C3E50] px-4 py-2 text-white hover:bg-[#1A252F]"
-        >
-          {({ loading }) => (loading ? "Generating PDF..." : "Download CV")}
-        </PDFDownloadLink>
-
-        <PDFDownloadLink
-          document={<ResumePDF info={info} education={education} work={work} />}
-          fileName={`${info.name}_CV.pdf`}
-          className="rounded bg-[#2C3E50] px-4 py-2 text-white hover:bg-[#1A252F]"
-        >
-          {({ loading }) => (loading ? "Generating PDF..." : "Download CV")}
-        </PDFDownloadLink>
       </div>
     </div>
   );

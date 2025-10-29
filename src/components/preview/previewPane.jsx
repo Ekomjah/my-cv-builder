@@ -51,32 +51,32 @@ export default function Preview({ info, education, work }) {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-[1fr_2fr]">
-        <div className="m-0 flex flex-col items-start gap-y-2 border-r border-[#2C3E50] px-0 py-2">
+      <div className="grid-row-[1fr_2fr] grid">
+        <div className="m-0 mb-4 flex flex-col items-start gap-y-2 border-b border-[#2C3E50] px-0 py-2">
           <h2 className="text-lg font-bold">Education/Skills: </h2>
           <ul className="list-disc">
             {education.school !== "" &&
               education.map(({ id, school, subject, course, startDate }) => (
-                <li className="mt-2 w-70 wrap-break-word" key={id}>
+                <li className="mt-2 grid grid-cols-3 gap-6" key={id}>
+                  <h2 className="text-base font-bold">{school}</h2>
                   <div className="flex flex-wrap items-center gap-x-2">
                     <p className="text-base font-medium">{subject}</p>
                     {course !== "" && (
                       <p className="text-base font-medium">({course})</p>
                     )}
                   </div>
-                  <div className="flex flex-wrap items-center gap-1">
-                    <h2 className="max-w-60 text-base font-bold">{school}</h2>
-                    {startDate !== "" && (
-                      <p className="text-base font-semibold"> -{startDate}</p>
-                    )}
-                  </div>
+
+                  {startDate !== "" && (
+                    <p className="text-base font-semibold">{startDate}</p>
+                  )}
                 </li>
               ))}
           </ul>
         </div>
-        <ul className="bold-list flex list-decimal flex-col gap-6 pl-7">
+        <ul className="bold-list flex list-decimal flex-col gap-6">
+          <h2 className="text-lg font-bold">Work Experience:</h2>
           {work.map(({ id, company, position, description, from, till }) => (
-            <li key={id}>
+            <li key={id} className="px-4">
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-bold">{company}</h2>
 
