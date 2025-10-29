@@ -44,7 +44,7 @@ export default function Education({
           <ListPlus />
         </button>
       </div>
-      {education.map(({ id, school, subject, course, startDate }, i) => (
+      {education.map(({ id, school, subject, course, startDate }) => (
         <div key={id} className="mt-3">
           <div className="flex justify-end">
             <button
@@ -73,7 +73,7 @@ export default function Education({
               onChange={(e) =>
                 handleReplacement(
                   "school",
-                  i,
+                  id,
                   e.target.value,
                   education,
                   setEducation,
@@ -96,7 +96,7 @@ export default function Education({
               onChange={(e) =>
                 handleReplacement(
                   "subject",
-                  i,
+                  id,
                   e.target.value,
                   education,
                   setEducation,
@@ -109,27 +109,22 @@ export default function Education({
             className="mb-2 flex flex-col md:grid md:grid-cols-[130px_1fr]"
           >
             <p className="mb-2 font-semibold">Qualification acquired: </p>
-            <Select
+            <Input
+              type="text"
+              placeholder="Ph.D"
+              maxLength={7}
               className="border-gray-400 outline-0"
               value={course}
-              onValueChange={(e) => {
-                handleReplacement("course", i, e, education, setEducation);
+              onChange={(e) => {
+                handleReplacement(
+                  "course",
+                  id,
+                  e.target.value,
+                  education,
+                  setEducation,
+                );
               }}
-            >
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select a certification" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Qualifications</SelectLabel>
-                  <SelectItem value="Secondary">High School Cert</SelectItem>
-                  <SelectItem value="Bachelors">Bachelors (B.Sc)</SelectItem>
-                  <SelectItem value="Masters">Masters (M.Sc)</SelectItem>
-                  <SelectItem value="Doctorate">Doctorate (Ph.D)</SelectItem>
-                  <SelectItem value="Other">Other</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+            />
           </label>
 
           <label className="flex flex-col md:grid md:grid-cols-[130px_1fr]">
@@ -141,7 +136,7 @@ export default function Education({
               onChange={(e) => {
                 handleReplacement(
                   "startDate",
-                  i,
+                  id,
                   e.target.value,
                   education,
                   setEducation,

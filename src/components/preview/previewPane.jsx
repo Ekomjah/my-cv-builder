@@ -52,23 +52,19 @@ export default function Preview({ info, education, work }) {
         </div>
       </div>
       <div className="grid grid-cols-[1fr_2fr]">
-        <div className="flex flex-col items-start gap-2 border-r border-[#2C3E50] p-2">
+        <div className="m-0 flex flex-col items-start gap-y-2 border-r border-[#2C3E50] px-0 py-2">
           <h2 className="text-lg font-bold">Education/Skills: </h2>
           <ul className="list-disc">
             {education.school !== "" &&
-              education.map(({ school, subject, course, startDate }) => (
-                <li className="mt-2">
-                  <div className="flex gap-1">
-                    <p className="max-w-[190px] text-base font-medium">
-                      {subject}
-                    </p>
+              education.map(({ id, school, subject, course, startDate }) => (
+                <li className="mt-2 w-70 wrap-break-word" key={id}>
+                  <div className="flex flex-wrap items-center gap-x-2">
+                    <p className="text-base font-medium">{subject}</p>
                     {course !== "" && (
-                      <p className="max-w-[190px] text-base font-medium">
-                        ({course})
-                      </p>
+                      <p className="text-base font-medium">({course})</p>
                     )}
                   </div>
-                  <div className="flex items-center gap-1">
+                  <div className="flex flex-wrap items-center gap-1">
                     <h2 className="max-w-60 text-base font-bold">{school}</h2>
                     {startDate !== "" && (
                       <p className="text-base font-semibold"> -{startDate}</p>
@@ -78,9 +74,9 @@ export default function Preview({ info, education, work }) {
               ))}
           </ul>
         </div>
-        <ul className="bold-list flex list-decimal flex-col gap-6 p-4 pl-7">
-          {work.map(({ company, position, description, from, till }) => (
-            <li>
+        <ul className="bold-list flex list-decimal flex-col gap-6 pl-7">
+          {work.map(({ id, company, position, description, from, till }) => (
+            <li key={id}>
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-bold">{company}</h2>
 

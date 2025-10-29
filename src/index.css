@@ -185,8 +185,54 @@ button:focus-visible {
 }
 
 @media print {
+  /* make sure backgrounds/text/colors become visible on paper */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  /* Force light theme for print (counteract .dark) */
+  :root,
+  html,
+  body,
+  .dark {
+    background: white !important;
+    color: black !important;
+  }
+
+  /* flatten grid into a single column for print */
+  .grid-layout-xl {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  /* hide the form, show preview full width */
+  .form-container {
+    display: none !important;
+  }
+  .preview-container {
+    display: block !important;  
+    width: 100% !important;
+    background: white !important;
+    color: black !important;
+    /* ensure images and inline elements scale */
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* hide UI elements meant not to print */
   .no-print {
-    display: none;
+    display: none !important;
+  }
+
+  /* reset body flex that can center and shrink content on paper */
+  body {
+    display: block !important;
+    min-height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
   }
 }
 

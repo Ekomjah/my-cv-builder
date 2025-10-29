@@ -34,13 +34,12 @@ export default function Form({
 }
 
 function handleReplacement(typeField, index, e, state, stateSetter) {
-  const map = state.map((el, i) => {
-    if (i === index) {
+  const map = state.map((el) => {
+    if (el.id === index) {
       return { ...el, [typeField]: e };
     } else {
       return el;
     }
   });
   stateSetter(map);
-  return;
 }

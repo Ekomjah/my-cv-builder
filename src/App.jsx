@@ -50,7 +50,16 @@ function App() {
           work={work}
           setWork={setWork}
         />
-        <Preview info={info} education={education} work={work} />
+        <div className="preview-container">
+          <Preview info={info} education={education} work={work} />
+        </div>
+
+        <button
+          className="no-print rounded bg-green-500 px-4 py-2 text-white hover:bg-green-700"
+          onClick={() => window.print()}
+        >
+          Print Me
+        </button>
       </div>
 
       {/* Below XL: show only one view at a time */}
@@ -70,8 +79,8 @@ function App() {
       </div>
 
       {/* Action Buttons */}
+
       <div className="flex flex-wrap justify-center gap-4">
-        {/* Show these buttons only when preview is visible on small screens */}
         {!isFormShowing && (
           <>
             <button
@@ -82,7 +91,6 @@ function App() {
             </button>
           </>
         )}
-
         {/* PDF Download button - always visible */}
         <PDFDownloadLink
           document={<ResumePDF info={info} education={education} work={work} />}

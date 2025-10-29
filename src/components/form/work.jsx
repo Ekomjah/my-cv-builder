@@ -29,7 +29,7 @@ export default function Work({ work, setWork, handleReplacement }) {
           <ListPlus />
         </button>
       </div>
-      {work.map(({ id, company, position, description, from, till }, i) => (
+      {work.map(({ id, company, position, description, from, till }) => (
         <div key={id}>
           <div className="mt-2 flex justify-end">
             <button
@@ -54,7 +54,7 @@ export default function Work({ work, setWork, handleReplacement }) {
               value={company}
               onChange={(e) => {
                 e.preventDefault();
-                handleReplacement("company", i, e.target.value, work, setWork);
+                handleReplacement("company", id, e.target.value, work, setWork);
               }}
             />
           </label>
@@ -70,7 +70,13 @@ export default function Work({ work, setWork, handleReplacement }) {
               value={position}
               onChange={(e) => {
                 e.preventDefault();
-                handleReplacement("position", i, e.target.value, work, setWork);
+                handleReplacement(
+                  "position",
+                  id,
+                  e.target.value,
+                  work,
+                  setWork,
+                );
               }}
             />
           </label>
@@ -91,7 +97,7 @@ export default function Work({ work, setWork, handleReplacement }) {
                   e.preventDefault();
                   handleReplacement(
                     "description",
-                    i,
+                    id,
                     e.target.value,
                     work,
                     setWork,
@@ -119,7 +125,7 @@ export default function Work({ work, setWork, handleReplacement }) {
                 value={from}
                 onChange={(e) => {
                   e.preventDefault();
-                  handleReplacement("from", i, e.target.value, work, setWork);
+                  handleReplacement("from", id, e.target.value, work, setWork);
                   console.log(work);
                 }}
               />
@@ -137,7 +143,7 @@ export default function Work({ work, setWork, handleReplacement }) {
                 value={till}
                 onChange={(e) => {
                   e.preventDefault();
-                  handleReplacement("till", i, e.target.value, work, setWork);
+                  handleReplacement("till", id, e.target.value, work, setWork);
                   console.log(work[id].till);
                 }}
               />
