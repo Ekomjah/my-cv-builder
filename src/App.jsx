@@ -34,7 +34,7 @@ function App() {
       <div className="flex justify-end xl:hidden">
         <button
           onClick={() => setIsFormShowing(!isFormShowing)}
-          className="rounded bg-purple-600 px-4 py-2 text-white hover:bg-purple-800"
+          className="no-print rounded bg-purple-600 px-4 py-2 text-white hover:bg-purple-800"
         >
           {isFormShowing ? "Show Preview" : "Show Form"}
         </button>
@@ -80,22 +80,8 @@ function App() {
             >
               Print Me
             </button>
-            <button
-              className="no-print rounded bg-purple-500 px-4 py-2 text-white hover:bg-purple-700 xl:hidden"
-              onClick={() => setIsFormShowing(true)}
-            >
-              Continue Editing
-            </button>
           </>
         )}
-
-        {/* Print button for XL and above */}
-        <button
-          className="xl-block no-print hide-me hidden rounded bg-green-500 px-4 py-2 text-white hover:bg-green-700"
-          onClick={() => window.print()}
-        >
-          Print Me
-        </button>
 
         {/* PDF Download button - always visible */}
         <PDFDownloadLink
